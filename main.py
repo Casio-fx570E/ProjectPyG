@@ -4,7 +4,10 @@ pygame.init()
 screen_width = 1200
 screen_height = 700
 screen = pygame.display.set_mode((screen_width, screen_height))
+pygame.display.set_caption('Игра')
+pygame.display.set_icon(pygame.image.load('data/icon.bmp'))
 clock = pygame.time.Clock()
+FPS = 60
 background_image = pygame.image.load('data/Background/BG3.png')
 background_image_2 = pygame.image.load('data/Background/BG1.png')
 background_image_3 = pygame.image.load('data/Background/BG2.png')
@@ -22,4 +25,4 @@ while True:
     screen.blit(image3, (0, 0))
     screen.blit(image1, (0, 0))
     pygame.display.update()
-    clock.tick(60)
+    clock.tick(FPS)
