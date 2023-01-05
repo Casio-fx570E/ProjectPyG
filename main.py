@@ -1,4 +1,6 @@
 import pygame, sys
+from map import *
+from level import Level
 
 pygame.init()
 screen_width = 1200
@@ -7,6 +9,7 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Игра')
 pygame.display.set_icon(pygame.image.load('data/icon.bmp'))
 clock = pygame.time.Clock()
+level = Level(level_map_1, screen)
 FPS = 60
 background_image = pygame.image.load('data/Background/BG3.png')
 background_image_2 = pygame.image.load('data/Background/BG1.png')
@@ -24,5 +27,6 @@ while True:
     screen.blit(image2, (0, 0))
     screen.blit(image3, (0, 0))
     screen.blit(image1, (0, 0))
+    level.run()
     pygame.display.update()
     clock.tick(FPS)
