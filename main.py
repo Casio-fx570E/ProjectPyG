@@ -10,7 +10,7 @@ pygame.display.set_caption('Игра')
 pygame.display.set_icon(pygame.image.load('data/icon.bmp'))
 clock = pygame.time.Clock()
 level = Level(level_map_1, screen)
-FPS = 60
+FPS = 30
 background_image = pygame.image.load('data/Background/BG3.png')
 background_image_2 = pygame.image.load('data/Background/BG1.png')
 background_image_3 = pygame.image.load('data/Background/BG2.png')
