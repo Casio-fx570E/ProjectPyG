@@ -44,6 +44,7 @@ class Level:
                 elif player.direction.y < 0:
                     player.rect.top = sprite.rect.bottom
                     player.direction.y = 0
+
     def run(self):
         self.tiles.draw(self.display_surface)
 

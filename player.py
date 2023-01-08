@@ -5,7 +5,7 @@ from load_pic import load_image
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos):
         super().__init__()
-        self.image = pygame.Surface((32, 64))
+        self.image = pygame.Surface((0, 64))
         self.rect = self.image.get_rect(topleft=pos)
         self.direction = pygame.math.Vector2(50, 300)
         self.speed = 10
@@ -13,7 +13,7 @@ class Player(pygame.sprite.Sprite):
         self.jump_speed = -32
         self.frames_run = []
         self.frames_run_count = 0
-        self.run = 'Character/Run/Run-Sheet.png'
+        self.run = 'Character/Run/Run-Sheet_original.png'
         self.cut_sheet(load_image(self.run), 8, 1, self.frames_run)
         self.frames_idle = []
         self.frames_idle_count = 0
@@ -21,8 +21,14 @@ class Player(pygame.sprite.Sprite):
         self.cut_sheet(load_image(self.idle), 4, 1, self.frames_idle)
         self.frames_run_left = []
         self.frames_run_left_count = 0
-        self.run_left = 'Character/Run/Run-Sheet_left.png'
+        self.run_left = 'Character/Run/Run-Sheet_left_original.png'
         self.cut_sheet(load_image(self.run_left), 8, 1, self.frames_run_left)
+        image = load_image('Character/Attack-01/Attack-01-Sheet.png')
+        image1 = pygame.transform.scale(image, (32, 64))
+        self.frames_attack = []
+        self.frames_attack_count = 0
+        self.attack = 'Character/Attack-01/Attack-01-Sheet.png'
+        self.cut_sheet(load_image(self.attack), 8, 1, self.frames_attack)
 
     def animated_move(self, frames_run_count, frames_run):
         frames_run_count = (frames_run_count + 1) % len(frames_run)
@@ -47,6 +53,10 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_w]:
             self.image = load_image('Character/Jump/Jump.png')
             self.jump_yes()
+
+        if keys[pygame.K_e]:
+            self.frames_attack_count, self.frames_attack = self.animated_move(self.frames_attack_count,
+                                                                              self.frames_attack)
 
     def cut_sheet(self, sheet, columns, rows, frames):
         self.rect = pygame.Rect(self.direction.x, self.direction.y, sheet.get_width() // columns,
