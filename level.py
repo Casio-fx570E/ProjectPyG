@@ -2,6 +2,7 @@ import pygame
 from title import Tile
 from map import tile_size
 from player import Player
+from mob import Mob
 
 
 class Level:
@@ -12,6 +13,7 @@ class Level:
     def setup_level(self, layout):
         self.tiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
+        self.mob = pygame.sprite.GroupSingle()
         for row_index, row in enumerate(layout):
             for col_index, cell in enumerate(row):
                 x = col_index * tile_size
@@ -22,6 +24,9 @@ class Level:
                 if cell == 'P':
                     player_sprite = Player((x, y))
                     self.player.add(player_sprite)
+                if cell == 'Z':
+                    mob_sprite = Mob((x, y))
+                    self.mob.add(mob_sprite)
 
     def horizontal_movement_collision(self):
         player = self.player.sprite
@@ -45,6 +50,28 @@ class Level:
                     player.rect.top = sprite.rect.bottom
                     player.direction.y = 0
 
+    def horizontal_movement_collision_mob(self):
+        mob = self.mob.sprite
+        mob.rect.x += mob.direction.x * mob.speed
+        for sprite in self.tiles.sprites():
+            if sprite.rect.colliderect(mob.rect):
+                if mob.direction.x < 0:
+                    mob.rect.left = sprite.rect.right
+                elif mob.direction.x > 0:
+                    mob.rect.right = sprite.rect.left
+
+    def vertical_movement_collision_mob(self):
+        mob = self.mob.sprite
+        mob.apply_gravity()
+        for sprite in self.tiles.sprites():
+            if sprite.rect.colliderect(mob.rect):
+                if mob.direction.y > 0:
+                    mob.rect.bottom = sprite.rect.top
+                    mob.direction.y = 0
+                elif mob.direction.y < 0:
+                    mob.rect.top = sprite.rect.bottom
+                    mob.direction.y = 0
+
     def run(self):
         self.tiles.draw(self.display_surface)
 
@@ -52,3 +79,7 @@ class Level:
         self.vertical_movement_collision()
         self.player.draw(self.display_surface)
         self.player.update()
+
+        self.mob.draw(self.display_surface)
+        self.vertical_movement_collision_mob()
+        self.horizontal_movement_collision_mob()
