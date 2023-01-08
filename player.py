@@ -19,37 +19,54 @@ class Player(pygame.sprite.Sprite):
         self.frames_idle_count = 0
         self.idle = 'Character/Idle/Idle-Sheet.png'
         self.cut_sheet(load_image(self.idle), 4, 1, self.frames_idle)
+        self.frames_idle_left = []
+        self.frames_idle_left_count = 0
+        self.idle_left = 'Character/Idle/Idle-Sheet-Left.png'
+        self.cut_sheet(load_image(self.idle_left), 4, 1, self.frames_idle_left)
         self.frames_run_left = []
         self.frames_run_left_count = 0
         self.run_left = 'Character/Run/Run-Sheet_left_original.png'
         self.cut_sheet(load_image(self.run_left), 8, 1, self.frames_run_left)
-        image = load_image('Character/Attack-01/Attack-01-Sheet.png')
-        image1 = pygame.transform.scale(image, (32, 64))
         self.frames_attack = []
         self.frames_attack_count = 0
         self.attack = 'Character/Attack-01/Attack-01-Sheet.png'
         self.cut_sheet(load_image(self.attack), 8, 1, self.frames_attack)
+        self.frames_attack_left = []
+        self.frames_attack_left_count = 0
+        self.attack_left = 'Character/Attack-01/Attack-02-Sheet.png'
+        self.cut_sheet(load_image(self.attack_left), 8, 1, self.frames_attack_left)
+        self.side = 1
 
     def animated_move(self, frames_run_count, frames_run):
         frames_run_count = (frames_run_count + 1) % len(frames_run)
         self.image = frames_run[frames_run_count]
         return frames_run_count, frames_run
 
+    def animated_move_left(self, frames_run_count, frames_run):
+        frames_run_count = (frames_run_count - 1) % len(frames_run)
+        self.image = frames_run[frames_run_count]
+        return frames_run_count, frames_run
+
     def get_input(self):
         keys = pygame.key.get_pressed()
-
         if keys[pygame.K_d]:
             self.frames_run_count, self.frames_run = self.animated_move(self.frames_run_count,
                                                                         self.frames_run)
             self.direction.x = 1
+            self.side = 1
         elif keys[pygame.K_a]:
-            self.frames_run_left_count, self.frames_run_left = self.animated_move(self.frames_run_left_count,
-                                                                                  self.frames_run_left)
+            self.frames_run_left_count, self.frames_run_left = self.animated_move_left(self.frames_run_left_count,
+                                                                                       self.frames_run_left)
             self.direction.x = -1
+            self.side = 0
         else:
             self.direction.x = 0
-            self.frames_idle_count, self.frames_idle = self.animated_move(self.frames_idle_count,
-                                                                          self.frames_idle)
+            if self.side == 1:
+                self.frames_idle_count, self.frames_idle = self.animated_move(self.frames_idle_count,
+                                                                              self.frames_idle)
+            elif self.side == 0:
+                self.frames_idle_left_count, self.frames_idle_left = self.animated_move(self.frames_idle_left_count,
+                                                                                        self.frames_idle_left)
         if keys[pygame.K_w]:
             self.image = load_image('Character/Jump/Jump.png')
             self.jump_yes()
@@ -57,6 +74,10 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_e]:
             self.frames_attack_count, self.frames_attack = self.animated_move(self.frames_attack_count,
                                                                               self.frames_attack)
+        elif keys[pygame.K_q]:
+            self.frames_attack_left_count, self.frames_attack_left = self.animated_move_left(
+                self.frames_attack_left_count,
+                self.frames_attack_left)
 
     def cut_sheet(self, sheet, columns, rows, frames):
         self.rect = pygame.Rect(self.direction.x, self.direction.y, sheet.get_width() // columns,
