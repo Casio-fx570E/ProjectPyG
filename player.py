@@ -10,7 +10,8 @@ class Player(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2(50, 300)
         self.speed = 10
         self.gravity = 5
-        self.jump_speed = -32
+        self.jump_speed = -50
+        self.jumped = 0
         self.frames_run = []
         self.frames_run_count = 0
         self.run = 'Character/Run/Run-Sheet_original.png'
@@ -67,9 +68,13 @@ class Player(pygame.sprite.Sprite):
             elif self.side == 0:
                 self.frames_idle_left_count, self.frames_idle_left = self.animated_move(self.frames_idle_left_count,
                                                                                         self.frames_idle_left)
-        if keys[pygame.K_w]:
+        if keys[pygame.K_w] and self.jumped == 0:
+            self.jumped = 1
             self.image = load_image('Character/Jump/Jump.png')
             self.jump_yes()
+
+        if keys[pygame.K_w] == False:
+            self.jumped = 0
 
         if keys[pygame.K_e]:
             self.frames_attack_count, self.frames_attack = self.animated_move(self.frames_attack_count,
