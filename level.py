@@ -3,6 +3,7 @@ from title import Tile
 from map import tile_size
 from player import Player
 from mob import Mob
+from invisible_tiles import Invisible_tiles
 
 
 class Level:
@@ -12,6 +13,7 @@ class Level:
 
     def setup_level(self, layout):
         self.tiles = pygame.sprite.Group()
+        self.invisible_tiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
         self.mob = pygame.sprite.GroupSingle()
         for row_index, row in enumerate(layout):
@@ -21,6 +23,9 @@ class Level:
                 if cell == 'X':
                     tile = Tile((x, y), tile_size)
                     self.tiles.add(tile)
+                if cell == 'I':
+                    invisible_tiles = Invisible_tiles((x, y), tile_size)
+                    self.invisible_tiles.add(invisible_tiles)
                 if cell == 'P':
                     player_sprite = Player((x, y))
                     self.player.add(player_sprite)
@@ -37,11 +42,25 @@ class Level:
                     player.rect.left = sprite.rect.right
                 elif player.direction.x > 0:
                     player.rect.right = sprite.rect.left
+        for sprite in self.invisible_tiles.sprites():
+            if sprite.rect.colliderect(player.rect):
+                if player.direction.x < 0:
+                    player.rect.left = sprite.rect.right
+                elif player.direction.x > 0:
+                    player.rect.right = sprite.rect.left
 
     def vertical_movement_collision(self):
         player = self.player.sprite
         player.apply_gravity()
         for sprite in self.tiles.sprites():
+            if sprite.rect.colliderect(player.rect):
+                if player.direction.y > 0:
+                    player.rect.bottom = sprite.rect.top
+                    player.direction.y = 0
+                elif player.direction.y < 0:
+                    player.rect.top = sprite.rect.bottom
+                    player.direction.y = 0
+        for sprite in self.invisible_tiles.sprites():
             if sprite.rect.colliderect(player.rect):
                 if player.direction.y > 0:
                     player.rect.bottom = sprite.rect.top
