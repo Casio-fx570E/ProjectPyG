@@ -2,7 +2,6 @@ import pygame, sys, os
 from map import *
 from level import Level
 
-
 pygame.init()
 screen_width = 1200
 screen_height = 700
@@ -34,6 +33,25 @@ def load_image(name, color_key=None):
     return image
 
 
+def play():
+    while True:
+        key = pygame.key.get_pressed()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif key[pygame.K_BACKSPACE]:
+                end_screen()
+                terminate()
+
+        screen.blit(image2, (0, 0))
+        screen.blit(image3, (0, 0))
+        screen.blit(image1, (0, 0))
+
+        level.run()
+        pygame.display.update()
+        clock.tick(FPS)
+
 
 def terminate():
     pygame.quit()
@@ -42,16 +60,17 @@ def terminate():
 
 def start_screen():
     intro_text = ['Нажмите "TAB" для игры', ''
-                    '', '                             ', ''
-                        '                              ', ''
-                        '                              ', ''
-                        '',''
-                        '','                                                     '
-                  'Правила - Для совершения прыжка нужно нажать space', ''
-                  '                                                                     '
-                  'Для ходьбы вправо - D, влево - A', ''
-                            '                                                                      '
-                  'Для удара вправо - E, влево - Q']
+                                            '', '                             ', ''
+                                                                                 '                              ', ''
+                                                                                                                   '                              ',
+                  ''
+                  '', ''
+                      '', '                                                     '
+                          'Правила - Для совершения прыжка нужно нажать space', ''
+                                                                                '                                                                     '
+                                                                                'Для ходьбы вправо - D, влево - A', ''
+                                                                                                                    '                                                                      '
+                                                                                                                    'Для удара вправо - E, влево - Q']
 
     fon = pygame.transform.scale(load_image('fon/fon.jpg'), (1200, 700))
     screen.blit(fon, (0, 0))
@@ -78,15 +97,50 @@ def start_screen():
         pygame.display.flip()
         clock.tick(FPS)
 
+
 start_screen()
 
 
+def end_screen():
+    intro_text = ['                               СЕМЁН']
+
+    fon = pygame.transform.scale(load_image('fon/endingscreen.jpg'), (1200, 700))
+    screen.blit(fon, (0, 0))
+    font = pygame.font.Font(None, 30)
+    text_coord = 50
+    for line in intro_text:
+        string_rendered = font.render(line, 1, pygame.Color('black'))
+        intro_rect = string_rendered.get_rect()
+        text_coord += 10
+        intro_rect.top = text_coord
+        intro_rect.x = 10
+        text_coord += intro_rect.height
+        screen.blit(string_rendered, intro_rect)
+
+    while True:
+        keys = pygame.key.get_pressed()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                terminate()
+            elif keys[pygame.K_ESCAPE]:
+                return
+                terminate()
+            elif keys[pygame.K_TAB]:
+                play()
+
+        pygame.display.flip()
+        clock.tick(FPS)
+
+
 while True:
+    key = pygame.key.get_pressed()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-
+        elif key[pygame.K_BACKSPACE]:
+            end_screen()
+            terminate()
 
     screen.blit(image2, (0, 0))
     screen.blit(image3, (0, 0))
