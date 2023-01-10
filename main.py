@@ -60,6 +60,7 @@ def terminate():
 
 def start_screen():
     intro_text = ['Нажмите "TAB" для игры', ''
+                    'Для возврата обратно нажмите - "END"'
                                             '', '                             ', ''
                                                                                  '                              ', ''
                                                                                                                    '                              ',
@@ -127,6 +128,8 @@ def end_screen():
                 terminate()
             elif keys[pygame.K_TAB]:
                 play()
+            elif keys[pygame.K_END]:
+                start_screen()
 
         pygame.display.flip()
         clock.tick(FPS)
@@ -141,6 +144,8 @@ while True:
         elif key[pygame.K_BACKSPACE]:
             end_screen()
             terminate()
+        elif key[pygame.K_END]:
+            start_screen()
 
     screen.blit(image2, (0, 0))
     screen.blit(image3, (0, 0))
