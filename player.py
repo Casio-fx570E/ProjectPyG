@@ -7,7 +7,7 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.Surface((0, 64))
         self.rect = self.image.get_rect(topleft=pos)
-        self.direction = pygame.math.Vector2(50, 300)
+        self.direction = pygame.math.Vector2(100, 300)
         self.speed = 10
         self.gravity = 5
         self.jump_speed = -50
@@ -36,7 +36,7 @@ class Player(pygame.sprite.Sprite):
         self.frames_attack_left_count = 0
         self.attack_left = 'Character/Attack-01/Attack-02-Sheet.png'
         self.cut_sheet(load_image(self.attack_left), 8, 1, self.frames_attack_left)
-        self.side = 1
+        self.side = 0
         self.position = pos
         self.timer = pygame.time.Clock()
         self.last_jump_tick = 0
