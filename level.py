@@ -78,11 +78,25 @@ class Level:
                     mob.rect.left = sprite.rect.right
                 elif mob.direction.x > 0:
                     mob.rect.right = sprite.rect.left
+        for sprite in self.invisible_tiles.sprites():
+            if sprite.rect.colliderect(mob.rect):
+                if mob.direction.x < 0:
+                    mob.rect.left = sprite.rect.right
+                elif mob.direction.x > 0:
+                    mob.rect.right = sprite.rect.left
 
     def vertical_movement_collision_mob(self):
         mob = self.mob.sprite
         mob.apply_gravity()
         for sprite in self.tiles.sprites():
+            if sprite.rect.colliderect(mob.rect):
+                if mob.direction.y > 0:
+                    mob.rect.bottom = sprite.rect.top
+                    mob.direction.y = 0
+                elif mob.direction.y < 0:
+                    mob.rect.top = sprite.rect.bottom
+                    mob.direction.y = 0
+        for sprite in self.invisible_tiles.sprites():
             if sprite.rect.colliderect(mob.rect):
                 if mob.direction.y > 0:
                     mob.rect.bottom = sprite.rect.top
@@ -98,7 +112,7 @@ class Level:
         self.vertical_movement_collision()
         self.player.draw(self.display_surface)
         self.player.update()
-
+        self.mob.update()
         self.mob.draw(self.display_surface)
         self.vertical_movement_collision_mob()
         self.horizontal_movement_collision_mob()
