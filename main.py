@@ -10,7 +10,7 @@ pygame.display.set_caption('Zombie Fight X')
 pygame.display.set_icon(pygame.image.load('data/icon.bmp'))
 clock = pygame.time.Clock()
 level = Level(level_map_1, screen)
-FPS = 30
+FPS = 60
 background_image = pygame.image.load('data/Background/BG3.png')
 background_image_2 = pygame.image.load('data/Background/BG1.png')
 background_image_3 = pygame.image.load('data/Background/BG2.png')
@@ -78,7 +78,7 @@ def start_screen():
     font = pygame.font.Font(None, 30)
     text_coord = 50
     for line in intro_text:
-        string_rendered = font.render(line, 1, pygame.Color('#99FF99'))
+        string_rendered = font.render(line, True, pygame.Color('#99FF99'))
         intro_rect = string_rendered.get_rect()
         text_coord += 10
         intro_rect.top = text_coord
@@ -93,7 +93,6 @@ def start_screen():
                 terminate()
             elif keys[pygame.K_TAB]:
                 return
-                terminate()
 
         pygame.display.flip()
         clock.tick(FPS)
@@ -110,7 +109,7 @@ def end_screen():
     font = pygame.font.Font(None, 30)
     text_coord = 50
     for line in intro_text:
-        string_rendered = font.render(line, 1, pygame.Color('black'))
+        string_rendered = font.render(line, True, pygame.Color('black'))
         intro_rect = string_rendered.get_rect()
         text_coord += 10
         intro_rect.top = text_coord
@@ -125,7 +124,6 @@ def end_screen():
                 terminate()
             elif keys[pygame.K_ESCAPE]:
                 return
-                terminate()
             elif keys[pygame.K_TAB]:
                 play()
             elif keys[pygame.K_END]:

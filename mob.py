@@ -19,7 +19,7 @@ class Mob(pygame.sprite.Sprite):
         self.last_jump_tick = 0
 
     def move(self):
-        if pygame.time.get_ticks() > self.last_pos_tick + 1000:
+        if pygame.time.get_ticks() > self.last_pos_tick + 2000:
             n = random.randint(0, 1)
             self.direction.x = 1 if n else -1
             self.last_pos_tick = pygame.time.get_ticks()

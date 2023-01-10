@@ -37,6 +37,9 @@ class Player(pygame.sprite.Sprite):
         self.attack_left = 'Character/Attack-01/Attack-02-Sheet.png'
         self.cut_sheet(load_image(self.attack_left), 8, 1, self.frames_attack_left)
         self.side = 1
+        self.position = pos
+        self.timer = pygame.time.Clock()
+        self.last_jump_tick = 0
 
     def animated_move(self, frames_run_count, frames_run):
         frames_run_count = (frames_run_count + 1) % len(frames_run)
@@ -69,12 +72,13 @@ class Player(pygame.sprite.Sprite):
                 self.frames_idle_left_count, self.frames_idle_left = self.animated_move(self.frames_idle_left_count,
                                                                                         self.frames_idle_left)
         if keys[pygame.K_SPACE] and self.jumped == 0:
-            if self.direction.y == 0:
+            if self.direction.y == 0 and pygame.time.get_ticks() > self.last_jump_tick + 1000:
                 self.jumped = 1
                 self.image = load_image('Character/Jump/Jump.png')
                 self.jump_yes()
+                self.last_jump_tick = pygame.time.get_ticks()
 
-        if keys[pygame.K_SPACE] == False:
+        if not keys[pygame.K_SPACE]:
             self.jumped = 0
 
         if keys[pygame.K_e]:
