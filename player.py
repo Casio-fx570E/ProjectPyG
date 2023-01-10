@@ -68,12 +68,12 @@ class Player(pygame.sprite.Sprite):
             elif self.side == 0:
                 self.frames_idle_left_count, self.frames_idle_left = self.animated_move(self.frames_idle_left_count,
                                                                                         self.frames_idle_left)
-        if keys[pygame.K_w] and self.jumped == 0:
+        if keys[pygame.K_SPACE] and self.jumped == 0:
             self.jumped = 1
             self.image = load_image('Character/Jump/Jump.png')
             self.jump_yes()
 
-        if keys[pygame.K_w] == False:
+        if keys[pygame.K_SPACE] == False:
             self.jumped = 0
 
         if keys[pygame.K_e]:
