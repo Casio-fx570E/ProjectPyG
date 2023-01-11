@@ -2,6 +2,7 @@ import pygame, sys
 from map import *
 from level import Level
 from load_pic import load_image
+from musica import fmusic, downm, upm
 
 pygame.init()
 screen_width = 1200
@@ -16,8 +17,7 @@ background_image = pygame.image.load('data/Background2.0/BG1.png')
 background_image_2 = pygame.image.load('data/Background2.0/BG2.png')
 image1 = pygame.transform.scale(background_image, (1200, 700))
 image2 = pygame.transform.scale(background_image_2, (1200, 700))
-fonm = pygame.mixer.music.load('data/musics/fonmusic.mp3')
-pygame.mixer.music.play(loops=-1, start=11.5)
+fmusic()
 
 
 def play():
@@ -79,6 +79,10 @@ def start_screen():
                 terminate()
             elif keys[pygame.K_TAB]:
                 return
+            elif keys[pygame.K_LEFT]:
+                downm()
+            elif keys[pygame.K_RIGHT]:
+                upm()
 
         pygame.display.flip()
         clock.tick(FPS)
@@ -108,6 +112,10 @@ def end_screen():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 terminate()
+            elif keys[pygame.K_LEFT]:
+                downm()
+            elif keys[pygame.K_RIGHT]:
+                upm()
             elif keys[pygame.K_ESCAPE]:
                 return
             elif keys[pygame.K_TAB]:
@@ -130,6 +138,10 @@ while True:
             terminate()
         elif key[pygame.K_END]:
             start_screen()
+        elif key[pygame.K_LEFT]:
+            downm()
+        elif key[pygame.K_RIGHT]:
+            upm()
 
     screen.blit(image1, (0, 0))
     screen.blit(image2, (0, 0))
