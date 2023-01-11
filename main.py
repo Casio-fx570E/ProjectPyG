@@ -2,7 +2,6 @@ import pygame, sys
 from map import *
 from level import Level
 from load_pic import load_image
-from musica import fmusic
 
 pygame.init()
 screen_width = 1200
@@ -17,7 +16,8 @@ background_image = pygame.image.load('data/Background2.0/BG1.png')
 background_image_2 = pygame.image.load('data/Background2.0/BG2.png')
 image1 = pygame.transform.scale(background_image, (1200, 700))
 image2 = pygame.transform.scale(background_image_2, (1200, 700))
-fmusic()
+fonm = pygame.mixer.music.load('data/musics/fonmusic.mp3')
+pygame.mixer.music.play(loops=-1, start=11.5)
 
 
 def play():
