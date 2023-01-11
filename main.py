@@ -1,6 +1,7 @@
-import pygame, sys, os
+import pygame, sys
 from map import *
 from level import Level
+from load_pic import load_image
 
 pygame.init()
 screen_width = 1200
@@ -10,29 +11,11 @@ pygame.display.set_caption('Zombie Fight X')
 pygame.display.set_icon(pygame.image.load('data/icon.bmp'))
 clock = pygame.time.Clock()
 level = Level(level_map_1, screen)
-FPS = 60
+FPS = 30
 background_image = pygame.image.load('data/Background2.0/BG1.png')
 background_image_2 = pygame.image.load('data/Background2.0/BG2.png')
-background_image_3 = pygame.image.load('data/Background2.0/BG3.png')
-background_image_4 = pygame.image.load('data/Background2.0/BG4.png')
 image1 = pygame.transform.scale(background_image, (1200, 700))
 image2 = pygame.transform.scale(background_image_2, (1200, 700))
-image3 = pygame.transform.scale(background_image_3, (1200, 700))
-image4 = pygame.transform.scale(background_image_4, (1200, 700))
-
-
-def load_image(name, color_key=None):
-    fullname = os.path.join('data', name)
-    try:
-        image = pygame.image.load(fullname)
-    except pygame.error as message:
-        print('Не удаётся загрузить:', name)
-        raise SystemExit(message)
-    image = image.convert_alpha()
-    if color_key is not None:
-        color_key = image.get_at((0, 0))
-        image.set_colorkey(color_key)
-    return image
 
 
 def play():
@@ -47,7 +30,6 @@ def play():
                 terminate()
 
         screen.blit(image2, (0, 0))
-        screen.blit(image3, (0, 0))
         screen.blit(image1, (0, 0))
 
         level.run()
@@ -62,7 +44,7 @@ def terminate():
 
 def start_screen():
     intro_text = ['Нажмите "TAB" для игры', ''
-                    'Для возврата обратно нажмите - "END"'
+                                            'Для возврата обратно нажмите - "END"'
                                             '', '                             ', ''
                                                                                  '                              ', ''
                                                                                                                    '                              ',
@@ -149,9 +131,6 @@ while True:
 
     screen.blit(image1, (0, 0))
     screen.blit(image2, (0, 0))
-    screen.blit(image3, (0, 0))
-    screen.blit(image4, (0, 0))
-
     level.run()
     pygame.display.update()
     clock.tick(FPS)
