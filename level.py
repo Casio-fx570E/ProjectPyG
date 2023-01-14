@@ -38,6 +38,7 @@ class Level:
     def horizontal_movement_collision(self):
         player = self.player.sprite
         is_attacking = Player.attack_is(self.player_sprite)
+        print(is_attacking)
         player.rect.x += player.direction.x * player.speed
         for sprite in self.tiles.sprites():
             if sprite.rect.colliderect(player.rect):
@@ -53,12 +54,6 @@ class Level:
                     player.rect.right = sprite.rect.left
         for sprite in self.mob.sprites():
             if sprite.rect.colliderect(player.rect):
-                if player.direction.x < 0:
-                    player.rect.left = sprite.rect.right
-                    self.player_sprite.hp -= 1
-                elif player.direction.x > 0:
-                    player.rect.right = sprite.rect.left
-                    self.player_sprite.hp -= 1
                 if (player.direction.x < 0 or player.direction.x == 0) and is_attacking:
                     sprite.kill()
                     self.player_sprite.kills_of_mob += 1
@@ -66,6 +61,12 @@ class Level:
                     player.rect.right = sprite.rect.left
                     sprite.kill()
                     self.player_sprite.kills_of_mob += 1
+                elif player.direction.x < 0:
+                    player.rect.left = sprite.rect.right
+                    self.player_sprite.hp -= 0.1
+                elif player.direction.x > 0:
+                    player.rect.right = sprite.rect.left
+                    self.player_sprite.hp -= 0.1
 
     def vertical_movement_collision(self):
         player = self.player.sprite
@@ -96,7 +97,6 @@ class Level:
                     player.rect.top = sprite.rect.bottom
                     player.direction.y = 0
                     sprite.direction.y = 0
-
 
     def horizontal_movement_collision_mob(self):
         mob = self.mob.sprites()
@@ -139,7 +139,6 @@ class Level:
                     elif mob.direction.y < 0:
                         mob.rect.top = sprite.rect.bottom
                         mob.direction.y = 0
-
 
     def run(self):
         self.tiles.draw(self.display_surface)

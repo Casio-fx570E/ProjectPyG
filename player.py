@@ -57,15 +57,33 @@ class Player(pygame.sprite.Sprite):
     def get_input(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_d]:
+            self.attack_is_true = False
             self.frames_run_count, self.frames_run = self.animated_move(self.frames_run_count,
                                                                         self.frames_run)
             self.direction.x = 1
             self.side = 1
         elif keys[pygame.K_a]:
+            self.attack_is_true = False
             self.frames_run_left_count, self.frames_run_left = self.animated_move_left(self.frames_run_left_count,
                                                                                        self.frames_run_left)
             self.direction.x = -1
             self.side = 0
+
+        elif keys[pygame.K_e]:
+            self.attack_is_true = True
+            self.frames_attack_count, self.frames_attack = self.animated_move(self.frames_attack_count,
+                                                                              self.frames_attack)
+            self.direction.x = 0
+            self.side = 1
+
+        elif keys[pygame.K_q]:
+            self.attack_is_true = True
+            self.frames_attack_left_count, self.frames_attack_left = self.animated_move_left(
+                self.frames_attack_left_count,
+                self.frames_attack_left)
+            self.direction.x = 0
+            self.side = 0
+
         else:
             self.direction.x = 0
             if self.side == 1:
@@ -86,17 +104,6 @@ class Player(pygame.sprite.Sprite):
 
         if not keys[pygame.K_SPACE]:
             self.jumped = 0
-
-        if keys[pygame.K_e]:
-            self.attack_is_true = True
-            self.frames_attack_count, self.frames_attack = self.animated_move(self.frames_attack_count,
-                                                                              self.frames_attack)
-
-        elif keys[pygame.K_q]:
-            self.attack_is_true = True
-            self.frames_attack_left_count, self.frames_attack_left = self.animated_move_left(
-                self.frames_attack_left_count,
-                self.frames_attack_left)
 
     def cut_sheet(self, sheet, columns, rows, frames):
         self.rect = pygame.Rect(self.direction.x, self.direction.y, sheet.get_width() // columns,
@@ -123,4 +130,5 @@ class Player(pygame.sprite.Sprite):
         self.direction.y = self.jump_speed
 
     def update(self):
+        print(self.hp)
         self.get_input()
