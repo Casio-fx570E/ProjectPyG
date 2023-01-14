@@ -4,6 +4,8 @@ from level import Level
 from load_pic import load_image
 from musica import fmusic, downm, upm
 from map2 import *
+import sys
+import sqlite3
 
 pygame.init()
 screen_width = 1200
@@ -125,9 +127,15 @@ start_screen()
 
 
 def end_screen():
+    time = str(pygame.time.get_ticks() // 1000)
+    con = sqlite3.connect('Records.db')
+    cur = con.cursor()
+    result = "SELECT Time FROM Recs ORDER BY Time"
+    res = cur.execute(result).fetchall()
+    print(res)
     intro_text = ['                              Game Over!',
-                  f'                            Ваше время:{pygame.time.get_ticks() // 1000}с',
-                  '',
+                  f'                            Ваше время:{time}с',
+                  f'                           Лучшее время:{res[0][0]}c',
                   '',
                   '',
                   '',
@@ -146,6 +154,13 @@ def end_screen():
     screen.blit(fon, (0, 0))
     font = pygame.font.Font(None, 30)
     text_coord = 50
+    con = sqlite3.connect('Records.db')
+    cur = con.cursor()
+    result = "INSERT INTO Recs(Time) VALUES('" + time + "')"
+    "SELECT * FROM Info ORDER BY DateTime"
+    res = cur.execute(result)
+    con.commit()
+    cur.close()
     for line in intro_text:
         string_rendered = font.render(line, True, pygame.Color('black'))
         intro_rect = string_rendered.get_rect()
