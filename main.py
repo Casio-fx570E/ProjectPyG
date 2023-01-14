@@ -125,7 +125,22 @@ start_screen()
 
 
 def end_screen():
-    intro_text = ['                              Game Over!']
+    intro_text = ['                              Game Over!',
+                  f'                            Ваше время:{pygame.time.get_ticks() // 1000}с',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+
+                  f'                                                                                                                                           {total_kills}']
 
     fon = pygame.transform.scale(load_image('fon/endingscreen.jpg'), (1200, 700))
     screen.blit(fon, (0, 0))
@@ -190,5 +205,6 @@ while True:
         screen.blit(image2, (0, 0))
         screen.blit(image1, (0, 0))
     level.run()
+    print(pygame.time.get_ticks())
     pygame.display.update()
     clock.tick(FPS)
