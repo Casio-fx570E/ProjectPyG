@@ -1,6 +1,7 @@
 import pygame
 from title import Tile
-from map import tile_size
+from title_2 import Tile_Sec
+from map import tile_size, level_map_1
 from player import Player
 from mob import Mob
 from invisible_tiles import Invisible_tiles
@@ -9,33 +10,58 @@ from invisible_tiles import Invisible_tiles
 class Level:
     def __init__(self, level_data, surface):
         self.display_surface = surface
+        self.level_data = level_data
         self.setup_level(level_data)
         self.is_dead = False
         self.is_win = False
 
     def setup_level(self, layout):
-        self.tiles = pygame.sprite.Group()
-        self.invisible_tiles = pygame.sprite.Group()
-        self.hero = Player
-        self.player = pygame.sprite.GroupSingle()
-        self.mob = pygame.sprite.Group()
-        for row_index, row in enumerate(layout):
-            for col_index, cell in enumerate(row):
-                x = col_index * tile_size
-                y = row_index * tile_size
-                if cell == 'X':
-                    tile = Tile((x, y), tile_size)
-                    self.tiles.add(tile)
-                if cell == 'I':
-                    invisible_tiles = Invisible_tiles((x, y), tile_size)
-                    self.invisible_tiles.add(invisible_tiles)
-                if cell == 'P':
-                    player_sprite = Player((x, y))
-                    self.player_sprite = player_sprite
-                    self.player.add(player_sprite)
-                if cell == 'Z':
-                    mob_sprite = Mob((x, y))
-                    self.mob.add(mob_sprite)
+        if self.level_data == level_map_1:
+            self.tiles = pygame.sprite.Group()
+            self.invisible_tiles = pygame.sprite.Group()
+            self.hero = Player
+            self.player = pygame.sprite.GroupSingle()
+            self.mob = pygame.sprite.Group()
+            for row_index, row in enumerate(layout):
+                for col_index, cell in enumerate(row):
+                    x = col_index * tile_size
+                    y = row_index * tile_size
+                    if cell == 'X':
+                        tile = Tile((x, y), tile_size)
+                        self.tiles.add(tile)
+                    if cell == 'I':
+                        invisible_tiles = Invisible_tiles((x, y), tile_size)
+                        self.invisible_tiles.add(invisible_tiles)
+                    if cell == 'P':
+                        player_sprite = Player((x, y))
+                        self.player_sprite = player_sprite
+                        self.player.add(player_sprite)
+                    if cell == 'Z':
+                        mob_sprite = Mob((x, y))
+                        self.mob.add(mob_sprite)
+        else:
+            self.tiles = pygame.sprite.Group()
+            self.invisible_tiles = pygame.sprite.Group()
+            self.hero = Player
+            self.player = pygame.sprite.GroupSingle()
+            self.mob = pygame.sprite.Group()
+            for row_index, row in enumerate(layout):
+                for col_index, cell in enumerate(row):
+                    x = col_index * tile_size
+                    y = row_index * tile_size
+                    if cell == 'X':
+                        tile = Tile_Sec((x, y), tile_size)
+                        self.tiles.add(tile)
+                    if cell == 'I':
+                        invisible_tiles = Invisible_tiles((x, y), tile_size)
+                        self.invisible_tiles.add(invisible_tiles)
+                    if cell == 'P':
+                        player_sprite = Player((x, y))
+                        self.player_sprite = player_sprite
+                        self.player.add(player_sprite)
+                    if cell == 'Z':
+                        mob_sprite = Mob((x, y))
+                        self.mob.add(mob_sprite)
 
     def horizontal_movement_collision(self):
         player = self.player.sprite

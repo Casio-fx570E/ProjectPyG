@@ -84,7 +84,7 @@ def start_screen():
                                                                                                                     '                                                                      '
                                                                                                                     'Для удара вправо - E, влево - Q']
 
-    fon = pygame.transform.scale(load_image('fon/fon.jpg'), (1200, 700))
+    fon = pygame.transform.scale(load_image('fon/fon_game.jpg'), (1200, 700))
     screen.blit(fon, (0, 0))
     font = pygame.font.Font(None, 30)
     text_coord = 50
