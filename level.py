@@ -15,7 +15,7 @@ class Level:
         self.tiles = pygame.sprite.Group()
         self.invisible_tiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
-        self.mob = pygame.sprite.GroupSingle()
+        self.mob = pygame.sprite.Group()
         for row_index, row in enumerate(layout):
             for col_index, cell in enumerate(row):
                 x = col_index * tile_size
@@ -70,40 +70,57 @@ class Level:
                     player.direction.y = 0
 
     def horizontal_movement_collision_mob(self):
-        mob = self.mob.sprite
-        mob.rect.x += mob.direction.x * mob.speed
-        for sprite in self.tiles.sprites():
-            if sprite.rect.colliderect(mob.rect):
-                if mob.direction.x < 0:
-                    mob.rect.left = sprite.rect.right
-                elif mob.direction.x > 0:
-                    mob.rect.right = sprite.rect.left
-        for sprite in self.invisible_tiles.sprites():
-            if sprite.rect.colliderect(mob.rect):
-                if mob.direction.x < 0:
-                    mob.rect.left = sprite.rect.right
-                elif mob.direction.x > 0:
-                    mob.rect.right = sprite.rect.left
+        mob = self.mob.sprites()
+        for sprite in self.mob.sprites():
+            sprite.rect.x += sprite.direction.x * sprite.speed
+        for mob in self.mob.sprites():
+            for sprite in self.tiles.sprites():
+                if sprite.rect.colliderect(mob.rect):
+                    if mob.direction.x < 0:
+                        mob.rect.left = sprite.rect.right
+                    elif mob.direction.x > 0:
+                        mob.rect.right = sprite.rect.left
+        for mob in self.mob.sprites():
+            for sprite in self.invisible_tiles.sprites():
+                if sprite.rect.colliderect(mob.rect):
+                    if mob.direction.x < 0:
+                        mob.rect.left = sprite.rect.right
+                    elif mob.direction.x > 0:
+                        mob.rect.right = sprite.rect.left
 
     def vertical_movement_collision_mob(self):
+        mob = self.mob.sprites()
+        for sprite in self.mob.sprites():
+            sprite.apply_gravity()
+        for mob in self.mob.sprites():
+            for sprite in self.tiles.sprites():
+                if sprite.rect.colliderect(mob.rect):
+                    if mob.direction.y > 0:
+                        mob.rect.bottom = sprite.rect.top
+                        mob.direction.y = 0
+                    elif mob.direction.y < 0:
+                        mob.rect.top = sprite.rect.bottom
+                        mob.direction.y = 0
+        for mob in self.mob.sprites():
+            for sprite in self.invisible_tiles.sprites():
+                if sprite.rect.colliderect(mob.rect):
+                    if mob.direction.y > 0:
+                        mob.rect.bottom = sprite.rect.top
+                        mob.direction.y = 0
+                    elif mob.direction.y < 0:
+                        mob.rect.top = sprite.rect.bottom
+                        mob.direction.y = 0
+
+    def attack_collision(self):
+        player = self.player.sprite
+        player.rect.x += player.direction.x * player.speed
         mob = self.mob.sprite
-        mob.apply_gravity()
-        for sprite in self.tiles.sprites():
-            if sprite.rect.colliderect(mob.rect):
-                if mob.direction.y > 0:
-                    mob.rect.bottom = sprite.rect.top
-                    mob.direction.y = 0
-                elif mob.direction.y < 0:
-                    mob.rect.top = sprite.rect.bottom
-                    mob.direction.y = 0
-        for sprite in self.invisible_tiles.sprites():
-            if sprite.rect.colliderect(mob.rect):
-                if mob.direction.y > 0:
-                    mob.rect.bottom = sprite.rect.top
-                    mob.direction.y = 0
-                elif mob.direction.y < 0:
-                    mob.rect.top = sprite.rect.bottom
-                    mob.direction.y = 0
+        if mob.rect.colliderect(player.rect):
+            if player.direction.x < 0:
+                player.rect.left = mob.rect.right
+            elif player.direction.x > 0:
+                player.rect.right = mob.rect.left
+
 
     def run(self):
         self.tiles.draw(self.display_surface)
