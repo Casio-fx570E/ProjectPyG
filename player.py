@@ -42,6 +42,7 @@ class Player(pygame.sprite.Sprite):
         self.last_jump_tick = 0
         self.attack_is_true = False
         self.hp = 1
+        self.kills_of_mob = 0
 
     def animated_move(self, frames_run_count, frames_run):
         frames_run_count = (frames_run_count + 1) % len(frames_run)
