@@ -18,11 +18,11 @@ class Player(pygame.sprite.Sprite):
         self.cut_sheet(load_image(self.run), 8, 1, self.frames_run)
         self.frames_idle = []
         self.frames_idle_count = 0
-        self.idle = 'Character/Idle/Idle-Sheet.png'
+        self.idle = 'Character/Idle/invis_image.png'
         self.cut_sheet(load_image(self.idle), 4, 1, self.frames_idle)
         self.frames_idle_left = []
         self.frames_idle_left_count = 0
-        self.idle_left = 'Character/Idle/Idle-Sheet-Left.png'
+        self.idle_left = 'Character/Idle/invise_image_2.png'
         self.cut_sheet(load_image(self.idle_left), 4, 1, self.frames_idle_left)
         self.frames_run_left = []
         self.frames_run_left_count = 0
