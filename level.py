@@ -10,6 +10,8 @@ class Level:
     def __init__(self, level_data, surface):
         self.display_surface = surface
         self.setup_level(level_data)
+        self.is_dead = False
+        self.is_win = False
 
     def setup_level(self, layout):
         self.tiles = pygame.sprite.Group()
@@ -38,7 +40,6 @@ class Level:
     def horizontal_movement_collision(self):
         player = self.player.sprite
         is_attacking = Player.attack_is(self.player_sprite)
-        print(is_attacking)
         player.rect.x += player.direction.x * player.speed
         for sprite in self.tiles.sprites():
             if sprite.rect.colliderect(player.rect):
@@ -67,6 +68,10 @@ class Level:
                 elif player.direction.x > 0:
                     player.rect.right = sprite.rect.left
                     self.player_sprite.hp -= 0.1
+                if self.player_sprite.hp < 0:
+                    self.is_dead = True
+                if self.player_sprite.kills_of_mob == 6:
+                    self.is_win = True
 
     def vertical_movement_collision(self):
         player = self.player.sprite

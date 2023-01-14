@@ -130,5 +130,4 @@ class Player(pygame.sprite.Sprite):
         self.direction.y = self.jump_speed
 
     def update(self):
-        print(self.hp)
         self.get_input()
