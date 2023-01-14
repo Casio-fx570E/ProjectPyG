@@ -14,6 +14,7 @@ class Level:
     def setup_level(self, layout):
         self.tiles = pygame.sprite.Group()
         self.invisible_tiles = pygame.sprite.Group()
+        self.hero = Player
         self.player = pygame.sprite.GroupSingle()
         self.mob = pygame.sprite.Group()
         for row_index, row in enumerate(layout):
@@ -28,6 +29,7 @@ class Level:
                     self.invisible_tiles.add(invisible_tiles)
                 if cell == 'P':
                     player_sprite = Player((x, y))
+                    self.player_sprite = player_sprite
                     self.player.add(player_sprite)
                 if cell == 'Z':
                     mob_sprite = Mob((x, y))
@@ -35,6 +37,8 @@ class Level:
 
     def horizontal_movement_collision(self):
         player = self.player.sprite
+        is_attacking = Player.attack_is(self.player_sprite)
+        print(is_attacking)
         player.rect.x += player.direction.x * player.speed
         for sprite in self.tiles.sprites():
             if sprite.rect.colliderect(player.rect):
@@ -48,6 +52,17 @@ class Level:
                     player.rect.left = sprite.rect.right
                 elif player.direction.x > 0:
                     player.rect.right = sprite.rect.left
+        for sprite in self.mob.sprites():
+            if sprite.rect.colliderect(player.rect):
+                if player.direction.x < 0:
+                    player.rect.left = sprite.rect.right
+                elif player.direction.x > 0:
+                    player.rect.right = sprite.rect.left
+                if (player.direction.x < 0 or player.direction.x == 0) and is_attacking:
+                    sprite.kill()
+                elif (player.direction.x > 0 or player.direction.x == 0) and is_attacking:
+                    player.rect.right = sprite.rect.left
+                    sprite.kill()
 
     def vertical_movement_collision(self):
         player = self.player.sprite
@@ -68,6 +83,17 @@ class Level:
                 elif player.direction.y < 0:
                     player.rect.top = sprite.rect.bottom
                     player.direction.y = 0
+        for sprite in self.mob.sprites():
+            if sprite.rect.colliderect(player.rect):
+                if player.direction.y > 0:
+                    player.rect.bottom = sprite.rect.top
+                    player.direction.y = 0
+                    sprite.direction.y = 0
+                elif player.direction.y < 0:
+                    player.rect.top = sprite.rect.bottom
+                    player.direction.y = 0
+                    sprite.direction.y = 0
+
 
     def horizontal_movement_collision_mob(self):
         mob = self.mob.sprites()
@@ -110,16 +136,6 @@ class Level:
                     elif mob.direction.y < 0:
                         mob.rect.top = sprite.rect.bottom
                         mob.direction.y = 0
-
-    def attack_collision(self):
-        player = self.player.sprite
-        player.rect.x += player.direction.x * player.speed
-        mob = self.mob.sprite
-        if mob.rect.colliderect(player.rect):
-            if player.direction.x < 0:
-                player.rect.left = mob.rect.right
-            elif player.direction.x > 0:
-                player.rect.right = mob.rect.left
 
 
     def run(self):

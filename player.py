@@ -40,6 +40,8 @@ class Player(pygame.sprite.Sprite):
         self.position = pos
         self.timer = pygame.time.Clock()
         self.last_jump_tick = 0
+        self.attack_is_true = False
+        self.hp = 1
 
     def animated_move(self, frames_run_count, frames_run):
         frames_run_count = (frames_run_count + 1) % len(frames_run)
@@ -66,12 +68,15 @@ class Player(pygame.sprite.Sprite):
         else:
             self.direction.x = 0
             if self.side == 1:
+                self.attack_is_true = False
                 self.frames_idle_count, self.frames_idle = self.animated_move(self.frames_idle_count,
                                                                               self.frames_idle)
             elif self.side == 0:
+                self.attack_is_true = False
                 self.frames_idle_left_count, self.frames_idle_left = self.animated_move(self.frames_idle_left_count,
                                                                                         self.frames_idle_left)
         if keys[pygame.K_SPACE] and self.jumped == 0:
+            self.attack_is_true = False
             if self.direction.y == 0 and pygame.time.get_ticks() > self.last_jump_tick + 1000:
                 self.jumped = 1
                 self.image = load_image('Character/Jump/Jump.png')
@@ -82,9 +87,12 @@ class Player(pygame.sprite.Sprite):
             self.jumped = 0
 
         if keys[pygame.K_e]:
+            self.attack_is_true = True
             self.frames_attack_count, self.frames_attack = self.animated_move(self.frames_attack_count,
                                                                               self.frames_attack)
+
         elif keys[pygame.K_q]:
+            self.attack_is_true = True
             self.frames_attack_left_count, self.frames_attack_left = self.animated_move_left(
                 self.frames_attack_left_count,
                 self.frames_attack_left)
@@ -103,6 +111,12 @@ class Player(pygame.sprite.Sprite):
     def apply_gravity(self):
         self.direction.y += self.gravity
         self.rect.y += self.direction.y
+
+    def attack_is(self):
+        return self.attack_is_true
+
+    def death(self):
+        self.kill()
 
     def jump_yes(self):
         self.direction.y = self.jump_speed
