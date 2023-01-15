@@ -194,9 +194,6 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-        elif key[pygame.K_BACKSPACE]:
-            end_screen()
-            terminate()
         elif key[pygame.K_LEFT]:
             downm()
         elif key[pygame.K_RIGHT]:
