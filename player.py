@@ -1,5 +1,6 @@
 import pygame
 from load_pic import load_image
+from musica import udar
 
 
 class Player(pygame.sprite.Sprite):
@@ -75,6 +76,7 @@ class Player(pygame.sprite.Sprite):
                                                                               self.frames_attack)
             self.direction.x = 0
             self.side = 1
+            udar()
 
         elif keys[pygame.K_q]:
             self.attack_is_true = True
@@ -83,6 +85,7 @@ class Player(pygame.sprite.Sprite):
                 self.frames_attack_left)
             self.direction.x = 0
             self.side = 0
+            udar()
 
         else:
             self.direction.x = 0

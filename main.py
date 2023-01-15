@@ -25,6 +25,7 @@ image2 = pygame.transform.scale(background_image_2, (1200, 700))
 image3 = pygame.transform.scale(background_image_3, (1200, 700))
 image4 = pygame.transform.scale(background_image_4, (1200, 700))
 image5 = pygame.transform.scale(background_image_5, (1200, 700))
+fmusic()
 
 
 def play():
@@ -72,7 +73,7 @@ def terminate():
 
 
 def start_screen():
-    intro_text = ['Нажмите "TAB" для игры', ''
+    intro_text = ['Нажмите "TAB" для 1 уровня, "SPACE" для уровня 2', ''
                                             'Для возврата обратно нажмите - "END"'
                                             '', '                             ', ''
                                                                                  '                              ', ''
@@ -181,16 +182,11 @@ def end_screen():
                 upm()
             elif keys[pygame.K_ESCAPE]:
                 return
-            elif keys[pygame.K_TAB]:
-                play()
             elif keys[pygame.K_SPACE]:
                 play_2nd()
-            elif keys[pygame.K_END]:
-                start_screen()
 
         pygame.display.flip()
         clock.tick(FPS)
-
 
 while True:
     key = pygame.key.get_pressed()
@@ -201,18 +197,16 @@ while True:
         elif key[pygame.K_BACKSPACE]:
             end_screen()
             terminate()
-        elif key[pygame.K_END]:
-            start_screen()
         elif key[pygame.K_LEFT]:
             downm()
         elif key[pygame.K_RIGHT]:
             upm()
     total_kills = level.player_sprite.kills_of_mob
-    print(total_kills)
     hp = level.is_dead
     end_of_game = level.is_win
     if hp or end_of_game:
         end_screen()
+        terminate()
     if is_second:
         screen.blit(image3, (0, 0))
         screen.blit(image4, (0, 0))
