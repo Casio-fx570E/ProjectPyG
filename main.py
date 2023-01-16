@@ -25,7 +25,7 @@ image2 = pygame.transform.scale(background_image_2, (1200, 700))
 image3 = pygame.transform.scale(background_image_3, (1200, 700))
 image4 = pygame.transform.scale(background_image_4, (1200, 700))
 image5 = pygame.transform.scale(background_image_5, (1200, 700))
-fmusic()
+
 
 
 def play():
@@ -35,9 +35,7 @@ def play():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            elif key[pygame.K_BACKSPACE]:
-                end_screen()
-                terminate()
+
 
         screen.blit(image2, (0, 0))
         screen.blit(image1, (0, 0))
@@ -133,7 +131,6 @@ def end_screen():
     cur = con.cursor()
     result = "SELECT Time FROM Recs ORDER BY Time"
     res = cur.execute(result).fetchall()
-    print(res)
     intro_text = ['                              Game Over!',
                   f'                            Ваше время:{time}с',
                   f'                           Лучшее время:{res[0][0]}c',
@@ -211,6 +208,5 @@ while True:
         screen.blit(image2, (0, 0))
         screen.blit(image1, (0, 0))
     level.run()
-    print(pygame.time.get_ticks())
     pygame.display.update()
     clock.tick(FPS)
