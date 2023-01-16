@@ -11,7 +11,7 @@ pygame.init()
 screen_width = 1200
 screen_height = 700
 screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption('Fight X')
+pygame.display.set_caption('Horwarts Legasy')
 pygame.display.set_icon(pygame.image.load('data/icon.bmp'))
 clock = pygame.time.Clock()
 FPS = 30
